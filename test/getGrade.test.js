@@ -1,16 +1,22 @@
-const getGrade = require('../studentGradeGenerator/getGrade');
+const getGrade = require("../studentGradeGenerator/getGrade");
 
-describe('getGrade', () => {
+describe("getGrade", () => {
   test('returns "Invalid input. Please enter a number between 0 and 100." when mark is not a number', () => {
-    expect(getGrade('not a number')).toBe('Invalid input. Please enter a number between 0 and 100.');
+    expect(getGrade("not a number")).toBe(
+      "Invalid input. Please enter a number between 0 and 100."
+    );
   });
 
   test('returns "Invalid input. Please enter a number between 0 and 100." when mark is less than 0', () => {
-    expect(getGrade(-10)).toBe('Invalid input. Please enter a number between 0 and 100.');
+    expect(getGrade(-10)).toBe(
+      "Invalid input. Please enter a number between 0 and 100."
+    );
   });
 
   test('returns "Invalid input. Please enter a number between 0 and 100." when mark is greater than 100', () => {
-    expect(getGrade(110)).toBe('Invalid input. Please enter a number between 0 and 100.');
+    expect(getGrade(110)).toBe(
+      "Invalid input. Please enter a number between 0 and 100."
+    );
   });
 
   test('returns "The student\'s grade is A." when mark is greater than 79', () => {

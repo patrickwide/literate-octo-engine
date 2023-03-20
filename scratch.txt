@@ -1,0 +1,96 @@
+const PAYE = {
+  rates: [
+    { monthly: 24000, annual: 288000, rate: 10 },
+    { monthly: 24301, annual: 288001, rate: 25 },
+    { monthly: Infinity, annual: 388000, rate: 30 },
+  ],
+  limits: {
+    personalRelief: { monthly: 2400, annual: 28800, effectiveSince: '2020-04-25' },
+    insuranceRelief: { monthly: 5000, annual: 60000, effectiveSince: '2007-01-01' },
+    pensionFundContribution: { monthly: 20000, annual: 240000, effectiveSince: '2006-01-01' },
+    hospContribution: { monthly: 0, annual: 0, effectiveSince: '2021-01-01' },
+    affordableHousingRelief: { monthly: 9000, annual: 108000, effectiveSince: '2018-07-01' },
+    ownerOccupierInterest: { monthly: 25000, annual: 300000, effectiveSince: '2017-01-01' },
+    disabilityExemption: { monthly: 150000, annual: 1800000, effectiveSince: '2010-03-10' },
+  },
+  nhifInsuranceRelief: { monthly: 5000, annual: 60000, effectiveSince: '2022-01-01' },
+};
+
+
+const FringeBenefitTax = {
+  loanInterestThreshold: {
+    date: '1998-06-11',
+    description: 'Loans issued on or before this date but with changed terms after are subject to Fringe Benefit Tax if interest rate is below market rate.',
+  },
+  marketInterestRates: {
+    '2023': [
+      { quarter: 'January to March', rate: 9 },
+      { quarter: 'April to June', rate: null },
+      { quarter: 'July to September', rate: null },
+      { quarter: 'October to December', rate: null },
+    ],
+    '2022': [
+      { quarter: 'January to March', rate: 7 },
+      { quarter: 'April to June', rate: 7 },
+      { quarter: 'July to September', rate: 8 },
+      { quarter: 'October to December', rate: 9 },
+    ],
+  },
+};
+
+
+const NHIFRates = {
+  ratesEffectiveFrom: '2015-04-01',
+  rates: [
+    { grossPay: 'Up to 5,999', deduction: 150 },
+    { grossPay: '6,000 - 7,999', deduction: 300 },
+    { grossPay: '8,000 - 11,999', deduction: 400 },
+    { grossPay: '12,000 - 14,999', deduction: 500 },
+    { grossPay: '15,000 - 19,999', deduction: 600 },
+    { grossPay: '20,000 - 24,999', deduction: 750 },
+    { grossPay: '25,000 - 29,999', deduction: 850 },
+    { grossPay: '30,000 - 34,999', deduction: 900 },
+    { grossPay: '35,000 - 39,999', deduction: 950 },
+    { grossPay: '40,000 - 44,999', deduction: 1000 },
+    { grossPay: '45,000 - 49,999', deduction: 1100 },
+    { grossPay: '50,000 - 59,999', deduction: 1200 },
+    { grossPay: '60,000 - 69,999', deduction: 1300 },
+    { grossPay: '70,000 - 79,999', deduction: 1400 },
+    { grossPay: '80,000 - 89,999', deduction: 1500 },
+    { grossPay: '90,000 - 99,999', deduction: 1600 },
+    { grossPay: '100,000 and above', deduction: 1700 },
+  ],
+};
+
+
+
+const nssfRates = {
+  newRates: {
+    tierI: {
+      pensionablePayLimit: 6000,
+      employeeContributionRate: 6,
+      employerContributionRate: 6
+    },
+    tierII: {
+      pensionablePayLimit: 18000,
+      employeeContributionRate: 6,
+      employerContributionRate: 6
+    }
+  },
+  oldRates: {
+    monthly: {
+      maximumContribution: 400
+    },
+    biweekly: {
+      maximumContribution: 200
+    },
+    weekly: {
+      maximumContribution: 100
+    }
+  },
+  ongoingLitigation: true
+};
+
+
+
+
