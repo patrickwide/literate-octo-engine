@@ -15,8 +15,6 @@ const PAYE = {
   },
   nhifInsuranceRelief: { monthly: 5000, annual: 60000, effectiveSince: '2022-01-01' },
 };
-
-
 const FringeBenefitTax = {
   loanInterestThreshold: {
     date: '1998-06-11',
