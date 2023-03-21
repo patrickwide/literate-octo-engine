@@ -1,8 +1,11 @@
+// Calculates the taxable salary by adding basic salary and benefits
 function calculateTaxableSalary(basicSalary, benefits) {
   return basicSalary + benefits;
 }
 
+// Calculates the tax amount based on the taxable salary using tax slabs
 function calculateTaxAmount(taxableSalary) {
+  // Define tax slabs as an array of objects, each with a limit and rate
   const taxSlabs = [
     { limit: 24000, rate: 10 },
     { limit: 32333, rate: 25 },
@@ -11,6 +14,8 @@ function calculateTaxAmount(taxableSalary) {
 
   let taxRate;
   let prevLimit = 0;
+
+  // Loop through the tax slabs to find the applicable tax rate based on taxableSalary
   for (let i = 0; i < taxSlabs.length; i++) {
     const slab = taxSlabs[i];
     if (taxableSalary >= prevLimit && taxableSalary <= slab.limit) {
@@ -20,10 +25,13 @@ function calculateTaxAmount(taxableSalary) {
     }
   }
 
+  // Calculate the tax amount based on the tax rate and taxable salary
   return taxableSalary * (taxRate / 100);
 }
 
+// This function calculates the NHIF deduction based on the taxable salary
 function calculateNHIFDeduction(taxableSalary) {
+  // We define an array of objects containing the NHIF rates for different salary limits
   const nhifRates = [
     { limit: 5999, deduction: 150 },
     { limit: 7999, deduction: 300 },
@@ -44,36 +52,61 @@ function calculateNHIFDeduction(taxableSalary) {
     { limit: Infinity, deduction: 1700 },
   ];
 
+  // We initialize the previous limit to 0
   let prevLimit = 0;
+
+  // We loop through the NHIF rates array to find the correct slab for the taxable salary
   for (let i = 0; i < nhifRates.length; i++) {
     const slab = nhifRates[i];
+
+    // If the taxable salary is between the previous limit and the current limit, we return the deduction for that slab
     if (taxableSalary >= prevLimit && taxableSalary <= slab.limit) {
       return slab.deduction;
+
+      // Otherwise, we update the previous limit to the current limit plus 1
     } else {
       prevLimit = slab.limit + 1;
     }
   }
 }
 
+// This function calculates the NSSF contribution based on the taxable salary
 function calculateNSSFContribution(taxableSalary) {
+  // We define the maximum NSSF limit and the NSSF rate
   const nssfMaxLimit = 18000;
   const nssfRate = 0.06;
+
+  // If the taxable salary is greater than or equal to the maximum NSSF limit, we return the maximum limit multiplied by the rate
   if (taxableSalary >= nssfMaxLimit) {
     return nssfMaxLimit * nssfRate;
+
+    // Otherwise, we return the taxable salary multiplied by the rate
   } else {
     return taxableSalary * nssfRate;
   }
 }
 
+// This function calculates the net salary based on the basic salary and benefits
 function calculateNetSalary(basicSalary, benefits) {
+  // First, we calculate the taxable salary by adding the basic salary and benefits
   const taxableSalary = calculateTaxableSalary(basicSalary, benefits);
+
+  // Then we calculate the tax amount based on the taxable salary
   const taxAmount = calculateTaxAmount(taxableSalary);
+
+  // We also calculate the NHIF deduction based on the taxable salary
   const nhifDeduction = calculateNHIFDeduction(taxableSalary);
+
+  // Finally, we calculate the NSSF contribution based on the taxable salary
   const nssfAmount = calculateNSSFContribution(taxableSalary);
 
+  // We add up all the deductions to get the total deductions
   const totalDeductions = taxAmount + nhifDeduction + nssfAmount;
+
+  // And we subtract the total deductions from the taxable salary to get the net salary
   const netSalary = taxableSalary - totalDeductions;
 
+  // We return an object containing all the calculated values, with 2 decimal places
   return {
     taxAmount: taxAmount.toFixed(2),
     nhifDeduction: nhifDeduction.toFixed(2),
@@ -83,4 +116,5 @@ function calculateNetSalary(basicSalary, benefits) {
   };
 }
 
+// We export the calculateNetSalary function to make it available for other modules to use
 module.exports = calculateNetSalary;
