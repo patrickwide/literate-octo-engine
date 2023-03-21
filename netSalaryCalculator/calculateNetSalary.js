@@ -1,11 +1,29 @@
-function calculateNetSalary(basicSalary, benefits) {
+function calculateTaxableSalary(basicSalary, benefits) {
+  return basicSalary + benefits;
+}
+
+function calculateTaxAmount(taxableSalary) {
   const taxSlabs = [
     { limit: 24000, rate: 10 },
     { limit: 32333, rate: 25 },
     { limit: Infinity, rate: 30 },
   ];
 
-  const personalRelief = 2400;
+  let taxRate;
+  let prevLimit = 0;
+  for (let i = 0; i < taxSlabs.length; i++) {
+    const slab = taxSlabs[i];
+    if (taxableSalary >= prevLimit && taxableSalary <= slab.limit) {
+      taxRate = slab.rate;
+    } else {
+      prevLimit = slab.limit + 1;
+    }
+  }
+
+  return taxableSalary * (taxRate / 100);
+}
+
+function calculateNHIFDeduction(taxableSalary) {
   const nhifRates = [
     { limit: 5999, deduction: 150 },
     { limit: 7999, deduction: 300 },
@@ -26,35 +44,35 @@ function calculateNetSalary(basicSalary, benefits) {
     { limit: Infinity, deduction: 1700 },
   ];
 
-  const nssfLimitTier1 = 6000;
-  const nssfLimitTier2 = 18000;
-  const nssfRate = 0.06;
-
-  const taxableSalary = basicSalary + benefits - personalRelief;
-
-  let taxAmount = 0;
-  let taxableAmount = taxableSalary;
-  let nssfAmount = 0;
-
-  for (const slab of taxSlabs) {
-    const taxableInSlab = Math.min(slab.limit, taxableAmount);
-    taxAmount += (taxableInSlab * slab.rate) / 100;
-    taxableAmount -= taxableInSlab;
-    if (taxableAmount <= 0) break;
+  let prevLimit = 0;
+  for (let i = 0; i < nhifRates.length; i++) {
+    const slab = nhifRates[i];
+    if (taxableSalary >= prevLimit && taxableSalary <= slab.limit) {
+      return slab.deduction;
+    } else {
+      prevLimit = slab.limit + 1;
+    }
   }
+}
 
-  const nhifDeduction = nhifRates.find(
-    (rate) => taxableSalary <= rate.limit
-  ).deduction;
-  const nssfTier1Contribution =
-    Math.min(nssfLimitTier1, taxableSalary) * nssfRate;
-  const nssfTier2Contribution =
-    Math.min(nssfLimitTier2 - nssfLimitTier1, taxableSalary - nssfLimitTier1) *
-    nssfRate;
-  nssfAmount = nssfTier1Contribution + nssfTier2Contribution;
+function calculateNSSFContribution(taxableSalary) {
+  const nssfMaxLimit = 18000;
+  const nssfRate = 0.06;
+  if (taxableSalary >= nssfMaxLimit) {
+    return nssfMaxLimit * nssfRate;
+  } else {
+    return taxableSalary * nssfRate;
+  }
+}
+
+function calculateNetSalary(basicSalary, benefits) {
+  const taxableSalary = calculateTaxableSalary(basicSalary, benefits);
+  const taxAmount = calculateTaxAmount(taxableSalary);
+  const nhifDeduction = calculateNHIFDeduction(taxableSalary);
+  const nssfAmount = calculateNSSFContribution(taxableSalary);
 
   const totalDeductions = taxAmount + nhifDeduction + nssfAmount;
-  const netSalary = basicSalary + benefits - totalDeductions;
+  const netSalary = taxableSalary - totalDeductions;
 
   return {
     taxAmount: taxAmount.toFixed(2),

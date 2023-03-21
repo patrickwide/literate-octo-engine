@@ -1,4 +1,5 @@
-function checkSpeed(speed) {
+function checkSpeed(speedArg) {
+  const speed = Number(speedArg);
   // Check if the speed is valid
   if (isNaN(speed) || speed < 0) {
     return "Invalid input. Please enter a positive number.";
